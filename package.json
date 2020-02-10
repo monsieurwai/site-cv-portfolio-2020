@@ -1,0 +1,35 @@
+{
+  "name": "fantstatic",
+  "version": "1.0.0",
+  "description": "framework client side - static site",
+  "main": "tailwind.config.js",
+  "dependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@fullhuman/postcss-purgecss": "^2.0.6",
+    "autoprefixer": "^9.7.4",
+    "compress-images": "^1.5.8",
+    "html-includes": "^4.2.0",
+    "node-sass": "^4.13.1",
+    "npm-run-all": "^4.1.5",
+    "postcss-cli": "^7.1.0",
+    "tailwindcss": "^1.2.0"
+  },
+  "scripts": {
+    "generate:tailwind": "postcss dev/style/tailwind.css -o dist/style/tailwind.css compressed --source-maps",
+    "minify-imgs": "node compress-images.js",
+
+    "watch-html": "html-includes --watch --minify --src dev --dest dist/html",
+    "watch-scss": "node-sass --watch dev/style/main.scss -o dist/style --output-style compressed",
+    "watch-js": "npm-run-all --parallel watch-main-js watch-specific-js",
+    
+    "watch-main-js": "babel --watch dev/js/main --out-file dist/js/main/main.js --source-maps",
+    "watch-specific-js": "babel --watch dev/js/specific --out-dir dist/js/specific --source-maps",
+    
+    "dev": "npm-run-all --parallel generate:tailwind watch-scss watch-js watch-html",
+    "build": "postcss dev/style/tailwind.css -o dist/style/tailwind.css && html-includes --minify --src dev --dest dist/html && node-sass dev/style/main.scss -o dist/style --output-style compressed && babel dev/js/main --out-file dist/js/main/main.js --source-maps && babel dev/js/specific --out-dir dist/js/specific --source-maps && node compress-images.js"
+  },
+  "author": "mgelle",
+  "license": "ISC"
+}
